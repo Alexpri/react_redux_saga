@@ -1,6 +1,9 @@
 import React from 'react'
+import {connect} from 'react-redux'
+import {createPosts, showAlert} from "../redux/actions";
+import {AlertMessage} from "./AlertMessage";
 
-export default class PostForm extends React.Component {
+class PostForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
@@ -11,12 +14,16 @@ export default class PostForm extends React.Component {
   submitHandler = event => {
     event.preventDefault()
     const {title} = this.state
+    if (title.trim() === '') {
+      return this.props.showAlert('You need to fill in this field')
+    }
     console.log(this.state)
     const newPost = {
       title,
       id: Date.now().toString()
     }
-    console.log(newPost)
+    this.props.createPosts(newPost)
+    this.setState({title: ''})
   }
 
   changeInputHandler = event => {
@@ -32,6 +39,7 @@ export default class PostForm extends React.Component {
   render () {
     return (
       <form onSubmit={this.submitHandler}>
+        {this.props.alert && <AlertMessage message={this.props.alert}/>}
         <div className="form-group">
           <label htmlFor="title">Email address</label>
           <div className="d-flex">
@@ -49,3 +57,14 @@ export default class PostForm extends React.Component {
     )
   }
 }
+
+const mapDispatchToProps = {
+  createPosts,
+  showAlert
+}
+
+const mapStateToProps = state => ({
+  alert: state.app.alert
+})
+
+export default connect(null, mapDispatchToProps)(PostForm)

@@ -6,11 +6,10 @@ const Posts = ({syncPosts}) => {
   if (!syncPosts.length) {
     return <p>There is no post</p>
   }
-  return this.state.posts.map(post => <Post post={post} key={post}/>)
+  return syncPosts.map(post => <Post post={post} key={post.id}/>)
 }
 
 const mapStateToProps = state => {
-  console.log(state)
   return {
     syncPosts: state.posts.posts
   }
