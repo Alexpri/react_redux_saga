@@ -17,7 +17,6 @@ class PostForm extends React.Component {
     if (title.trim() === '') {
       return this.props.showAlert('You need to fill in this field')
     }
-    console.log(this.state)
     const newPost = {
       title,
       id: Date.now().toString()
